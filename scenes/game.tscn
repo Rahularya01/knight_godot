@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmwmb0pced7r0"]
+[gd_scene load_steps=9 format=3 uid="uid://bmwmb0pced7r0"]
 
 [ext_resource type="PackedScene" uid="uid://6xs44hq4dlwd" path="res://scenes/player.tscn" id="1_rqv7x"]
 [ext_resource type="Texture2D" uid="uid://dsiql8k6r33hj" path="res://assets/sprites/world_tileset.png" id="2_bmjg0"]
+[ext_resource type="PackedScene" uid="uid://cavbkr4ddok6v" path="res://scenes/platform.tscn" id="3_43yhp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pryn4"]
 texture = ExtResource("2_bmjg0")
@@ -430,12 +431,51 @@ texture = ExtResource("2_bmjg0")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_pryn4")
 
+[sub_resource type="Animation" id="Animation_otmei"]
+resource_name = "move"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(182, 70), Vector2(254, 70)]
+}
+
+[sub_resource type="Animation" id="Animation_d8qqi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(182, 70)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_domxj"]
+_data = {
+"RESET": SubResource("Animation_d8qqi"),
+"move": SubResource("Animation_otmei")
+}
+
 [node name="Game" type="Node2D"]
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("1_rqv7x")]
+[node name="Player" parent="." instance=ExtResource("1_rqv7x")]
+z_index = 5
 position = Vector2(12, 20)
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+[node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -6)
 zoom = Vector2(4, 4)
 position_smoothing_enabled = true
@@ -443,4 +483,13 @@ position_smoothing_enabled = true
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_ppolh")
 format = 2
-layer_0/tile_data = PackedInt32Array(131072, 0, 0, 131073, 0, 0, 196608, 0, 1, 262144, 0, 1, 262145, 0, 1, 196609, 0, 1, 262143, 65536, 1, 327679, 0, 0, 327678, 0, 0, 327680, 0, 1, 393216, 0, 1, 393217, 0, 1, 327681, 65536, 1, 393214, 0, 1, 458750, 0, 1, 458751, 0, 1, 393215, 0, 1, 262146, 393216, 0, 262147, 458752, 0, 262148, 393216, 0, 327682, 393216, 1, 327683, 393216, 1, 327684, 393216, 1, 393220, 393216, 1, 393219, 393216, 1, 393218, 393216, 1, 262149, 589824, 0, 262150, 655360, 0, 262151, 720896, 0, 262152, 393216, 0, 262153, 393216, 0, 327688, 393216, 1, 327689, 393216, 1, 393225, 393216, 1, 393224, 393216, 1)
+layer_0/tile_data = PackedInt32Array(131072, 0, 0, 131073, 0, 0, 196608, 0, 1, 262144, 0, 1, 262145, 0, 1, 196609, 0, 1, 262143, 65536, 1, 327679, 0, 0, 327678, 0, 0, 327680, 0, 1, 393216, 0, 1, 393217, 0, 1, 327681, 65536, 1, 393214, 0, 1, 458750, 0, 1, 458751, 0, 1, 393215, 0, 1, 262146, 393216, 0, 262147, 458752, 0, 262148, 393216, 0, 327682, 393216, 1, 327683, 393216, 1, 327684, 393216, 1, 393220, 393216, 1, 393219, 393216, 1, 393218, 393216, 1, 262149, 589824, 0, 262150, 655360, 0, 262151, 720896, 0, 262152, 393216, 0, 262153, 393216, 0, 327688, 393216, 1, 327689, 393216, 1, 393225, 393216, 1, 393224, 393216, 1, 262163, 0, 0, 262164, 0, 0, 262165, 0, 0, 327700, 0, 1, 327701, 0, 1, 393234, 0, 1, 393237, 0, 1, 262162, 0, 0, 327698, 0, 1, 327699, 0, 1, 393235, 0, 1, 393236, 0, 1, 262166, 0, 0, 327702, 0, 1, 393238, 0, 1, 262167, 0, 0, 327703, 0, 1, 393239, 0, 1, 262168, 0, 0, 327704, 0, 1, 393240, 0, 1, 262169, 0, 0, 327705, 0, 1, 393241, 0, 1, 262170, 0, 0, 327706, 0, 1, 393242, 0, 1)
+
+[node name="Platform" parent="." instance=ExtResource("3_43yhp")]
+position = Vector2(182, 70)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Platform"]
+libraries = {
+"": SubResource("AnimationLibrary_domxj")
+}
+autoplay = "move"
